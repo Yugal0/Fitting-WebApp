@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 import os
+from bokeh.plotting import figure
+from bokeh.embed import components
 
 app = Flask(__name__)
 
