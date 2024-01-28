@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flask App</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <style>
         .container {
             display: flex;
@@ -21,16 +23,52 @@
     </style>
 </head>
 <body>
-    <h1>{{ message }}</h1>
+
     <div class="container">
         <div class="left-section">
             <h2>Input</h2>
-            <!-- left section content here-->
+            <div class="Uploading Section">
+            <h3>Upload CSV file</h3>
+            <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+                <input id="fileInput" type="file" name="file" accept=".csv">
+                <button type="submit">Upload</button>
+            </form>
+            <h4 id="uploadStatus"></h4>
+            </div>
         </div>
         <div class="right-section">
             <h2>Output</h2>
             <!-- right section content here-->
         </div>
     </div>
+    <script>
+        $(document).ready(function(){
+            $('#uploadForm').submit(function(event){
+                event.preventDefault();
+                var fileInput = $('#fileInput');
+                var file = fileInput.files[0];
+                if (!file || !file.name.endsWith('.csv')) {
+                    $('#uploadStatus').text('Error: Please select a CSV file.');
+                    return;
+                }
+
+                var formData = new FormData($(this)[0]);
+                $.ajax({
+                    url: '/upload',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response){
+                        if(response.status === 'success'){
+                            $('#uploadStatus').text(response.message);
+                        } else {
+                            $('#uploadStatus').text('Error: ' + response.message);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
