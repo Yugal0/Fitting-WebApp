@@ -9,7 +9,7 @@ UPLOAD_FOLDER = "uploads"
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
-app.config['UPLOAD_FOLDER']= UPLOAD_FOLDER 
+app.config['UPLOAD_FOLDER']= UPLOAD_FOLDER
 
 app = Flask(__name__)
 
